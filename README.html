@@ -1,0 +1,65 @@
+<h1>Companion code and data for “A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale”</h1>
+<hr>
+<h1>Table of Contents</h1>
+<!-- TOC depthFrom:2 depthTo:4 withLinks:1 updateOnSave:1 orderedList:0 -->
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Requirements">System Requirements</a></li>
+<li><a href="#Instructions">Instructions</a></li>
+<li><a href="#Contact">Contact</a></li>
+</ul>
+<h2><!-- /TOC --></h2>
+<h1>Overview <a name="Overview"></a></h1>
+<p>This folder contains code and data to reproduce the results in the associated paper. In particular, the provided scripts will reproduce all graphs in Figure 5 and Table 1.</p>
+<h2>Calibration step 1</h2>
+<p>We provide geometry data (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">datafiles/step1/geometry_data.csv</code>) and code (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">calibrationStep1.mlx</code>) to perform the update on geometric parameter estimates. This recreates Table 1, columns 1-3.</p>
+<h2>Calibration step 2</h2>
+<p>We provide measured load-displacement data (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">datafiles/step2/load_displacement_measurements.csv</code>), prior model predictions of load-displacement data (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">datafiles/step2/load_displacement_model.csv</code>) and code (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">calibrationStep2.mlx</code>) to perform an update on the young’s modulus scaling parameter, e. This recreates Figure 5, and Table 1, column 4.</p>
+<h2>Calibration step 3</h2>
+<p>This step is broken into 3 parts:</p>
+<h3>Step 3_1: Data processing</h3>
+<p>We provide experimental strain vs. time data (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">datafiles/step3/initialconditiondata_X.DAT</code>) for the initial condition experiments and code (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">calibrationStep3_1_processdata.mlx</code>) to post-process this data and extract modal natural frequencies and damping ratios for the first two bending modes.</p>
+<h3>Step 3_2: Optimize point masses</h3>
+<p>This step requires evaluating the computational digital twin model in an optimization loop in order to fit point-masses to the structure which match the natural frequencies and damping ratios computed in Step 3_1. We provide Python code (<code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">calibrationStep3_2_optimize_point_masses.py</code>) which was used to run this optimization on our UAV structural model. The structural analysis model used to generate the paper’s results is <a href="https://akselos.com/">Akselos Integra v4.5.9</a>. Since the Akselos Integra software is proprietary and was used under license, we are unable to provide its source code. As a result <strong>the provided Python code will not run in the provided state</strong>. The provided Python code includes references to three (self-explanatory) functions that will need to be filled in for your choice of structural model:</p>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">modify_material_properties_in_structural_FEA_model(Emultiplier)</code></p>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">modify_point_masses_in_structural_FEA_model(point_mass_dict)</code></p>
+<p><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">frequencies = run_structural_FEA_model_and_return_natural_frequencies()</code></p>
+<p>We provide the output obtained from running this script on our UAV structural model in <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">datafiles/step2/massoptimizationresults.csv</code>.</p>
+<h3>Step 3_3: Process Optimization results</h3>
+<p>We provide the script <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">calibrationStep3_3_processoptimizationresults.mlx</code> which reads in <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">massoptimizationresults.csv</code> and post-processes the results in order to produce posterior estimates for the parameters <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">m</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">alpha</code>, and <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">beta</code>. This reproduces Table 1 columns 5-7.</p>
+<hr>
+<h1>Requirements <a name="Requirements"></a></h1>
+<h2>.mlx files</h2>
+<p>The majority of provided code files are <a href="https://www.mathworks.com/help/matlab/matlab_prog/live-script-file-format.html">MATLAB live code files</a>. These are a code notebook format which contains descriptive text alongside the code.</p>
+<p><strong><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">.mlx</code> files are compatible with MATLAB version R2016a or later</strong></p>
+<p>In the folder <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">legacyformat</code> we also provide versions of these scripts that have been converted to <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">.m</code> files, which are compatible with any version of MATLAB and can also be viewed (but not exectuted) in a text editor.</p>
+<p>The following functions used in the scripts require toolboxes to be installed:</p>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">fitdist</code>, <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">normpdf</code>, and <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">normrnd</code> are from the <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Statistics and Machine Learning Toolbox</code></li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">decimate</code>, and <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">findpeaks</code> are from the <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">Signal Processing Toolbox</code></li>
+</ul>
+<p>The software has been tested on MATLAB R2020a and MATLAB R2018a.</p>
+<h2>.py file</h2>
+<p>As described <a href="#step_3_2:_optimize_point_masses">above</a>, this code will not run as-is. It requires the user to provide an interface with a structural model.</p>
+<p>This code requires Python 3, and was tested using Python 3.7.4. The script leverages the following libraries:</p>
+<ul>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">numpy</code> (any version)</li>
+<li><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scipy</code> (any version containing <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">scipy.optimize.fmin</code>)</li>
+</ul>
+<hr>
+<h1>Instructions for use <a name="Instructions"></a></h1>
+<h2>Installation</h2>
+<p>This code requires no installation or compilation.</p>
+<h2>Execution</h2>
+<p>Simply open the relevant live script within MATLAB, set your working directory to the folder containing the script, then run the script.</p>
+<p>If using the <code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">legacyformat</code> code files, it is recommended that you use the <a href="https://www.mathworks.com/help/matlab/matlab_prog/publishing-matlab-code.html"><code style="font-family: Menlo, Consolas, &quot;DejaVu Sans Mono&quot;, monospace;">publish</code></a> functionality in MATLAB.</p>
+<h2>Expected output</h2>
+<p>The livescripts should run to completion without producing errors. Figures matching elements of Figure 5 and Table 1 in the paper should be generated throughout the scripts.</p>
+<p>Each live script should take no more than a few minutes to run on a standard laptop or desktop machine.</p>
+<hr>
+<h2>Further Reading</h2>
+<p>[paper citation will go here]</p>
+<hr>
+<h2>Contact <a name="Contact"></a></h2>
+<p>Michael Kapteyn
+<a href="mailto:mkapteyn@mit.edu">mkapteyn@mit.edu</a></p>
