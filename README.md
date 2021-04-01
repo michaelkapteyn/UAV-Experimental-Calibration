@@ -1,4 +1,4 @@
-# Companion code and data for "A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale"
+# Companion code and data for the calibration of a UAV digital twin, as presented in "A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale"
 
 --------------------
 # Table of Contents
@@ -10,6 +10,19 @@
 <!-- /TOC -->
 ---------------------
 # Overview <a name="Overview"></a>
+This code is a companion to an academic research paper. If you use this work in an academic context, please cite the following publication(s):
+
+Kapteyn, Michael G., Jacob V.R. Pretorius, and Karen E. Willcox. **A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale.** arXiv preprint arXiv:2012.05841 (2020). [https://arxiv.org/abs/2012.05841](https://arxiv.org/abs/2012.05841)
+
+		@article{kapteyn2020probabilistic,
+		  title={A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale},
+		  author={Kapteyn, Michael G and Pretorius, Jacob VR and Willcox, Karen E},
+		  journal={arXiv preprint arXiv:2012.05841},
+		  year={2020}
+		}
+
+**Keywords:** UAV, digital twin, graphical model, Dynamic Bayesian Network, experimental calibration
+
 This folder contains code and data to reproduce the results in the associated paper. In particular, the provided scripts will reproduce all graphs in Figure 5 and Table 1.
 
 ## Calibration step 1
@@ -36,7 +49,7 @@ This step requires evaluating the computational digital twin model in an optimiz
 We provide the output obtained from running this script on our UAV structural model in `datafiles/step2/massoptimizationresults.csv`.
 
 ### Step 3_3: Process Optimization results
-We provide the script `calibrationStep3_3_processoptimizationresults.mlx` which reads in `massoptimizationresults.csv` and post-processes the results in order to produce posterior estimates for the parameters `m`, `alpha`, and `beta`. This reproduces Table 1 columns 5-7.
+We provide the script `calibrationStep3_3_processoptimizationresults.mlx` which reads in `massoptimizationresults.csv` and post-processes the results in order to produce posterior estimates for the parameters `m`, `alpha`, and `beta`. This reproduces Table 1, columns 5-7.
 
 ---------------------
 # Requirements <a name="Requirements"></a>
@@ -75,13 +88,14 @@ Simply open the relevant live script within MATLAB, set your working directory t
 If using the `legacyformat` code files, it is recommended that you use the [`publish`](https://www.mathworks.com/help/matlab/matlab_prog/publishing-matlab-code.html) functionality in MATLAB.
 
 ## Expected output
-The livescripts should run to completion without producing errors. Figures matching elements of Figure 5 and Table 1 in the paper should be generated throughout the scripts.
+The livescripts should run to completion without producing errors. Figures matching the data elements of Figure 5 and Table 1 in the paper should be generated throughout the scripts.
 
 Each live script should take no more than a few minutes to run on a standard laptop or desktop machine.
 
 ---------------------
 ## Further Reading
-[paper citation will go here]
+Kapteyn, Michael G., Jacob VR Pretorius, and Karen E. Willcox. "A Probabilistic Graphical Model Foundation for Enabling Predictive Digital Twins at Scale." arXiv:2012.05841 (2021). [https://arxiv.org/abs/2012.05841](https://arxiv.org/abs/2012.05841)
+
 
 ---------------------
 ## Contact <a name="Contact"></a>
